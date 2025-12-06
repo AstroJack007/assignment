@@ -12,7 +12,7 @@ cd frontend
 npm install
 ```
 
-Create `.env.local` with your Supabase credentials:
+Create `frontend/.env.local` with your Supabase credentials:
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
@@ -23,6 +23,8 @@ Run the development server:
 npm run dev
 ```
 
+Visit: http://localhost:3000/dashboard
+
 ### Database
 Run the following SQL files in your Supabase SQL Editor (in order):
 1. `backend/schema.sql`
@@ -30,9 +32,19 @@ Run the following SQL files in your Supabase SQL Editor (in order):
 3. `backend/seed.sql`
 
 ### Edge Functions
-Deploy the edge function using Supabase CLI:
+Deploy using Supabase CLI:
 ```bash
-supabase functions deploy create-task
+npx supabase login
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase functions deploy create-task
+```
+
+Test the function (PowerShell):
+```powershell
+Invoke-RestMethod -Uri "https://YOUR_PROJECT.supabase.co/functions/v1/create-task" `
+  -Method POST `
+  -Headers @{Authorization="Bearer YOUR_ANON_KEY"; "Content-Type"="application/json"} `
+  -Body '{"application_id": "d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "task_type": "call", "due_at": "2025-12-07T12:00:00Z"}'
 ```
 
 ---
